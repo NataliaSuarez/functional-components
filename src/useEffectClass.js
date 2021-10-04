@@ -1,18 +1,27 @@
-import { useState, useEffect } from "react";
-
-/// USE EFFECT
-// cualqueir efecto lateral, como actualizar el DOM, leer/escribir en base de datos, conectarnos en API
-// cualqueir cosa que afecte al estado del componente
-
-// si no pasamos 2do arg, se ejecuta siempre
-// si definimos un empty array [], se ejecuta solo en el primer render
-// si dentro del array tenemos un dependencia el efecto se ejectura cda vez que se actualice la/s dep/s
+import { Component, useEffect, useState } from "react";
 
 const useContador = (initial) => {
   const [contador, setContador] = useState(initial);
   const incrementar = () => setContador(contador + 1);
   return [contador, incrementar];
 };
+
+/// USE EFFECT - Con Class
+class Interval extends Component {
+  intervalo = "";
+
+  componentDidMount() {
+    this.intervalo = setInterval(() => console.log(this.props.contador), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalo);
+  }
+
+  render() {
+    return <p>Intervalo</p>;
+  }
+}
 
 const App = () => {
   const [contador, incrementar] = useContador(0);
@@ -25,27 +34,37 @@ const App = () => {
     <div>
       Contador: {contador}
       <button onClick={incrementar}>Incrementar</button>
+      <Interval contador={contador} />
     </div>
   );
 };
 
 export default App;
 
-export const USE_EFFECT = `import { useState, useEffect } from "react";
-
-/// USE EFFECT
-// cualqueir efecto lateral, como actualizar el DOM, leer/escribir en base de datos, conectarnos en API
-// cualqueir cosa que afecte al estado del componente
-
-// si no pasamos 2do arg, se ejecuta siempre
-// si definimos un empty array [], se ejecuta solo en el primer render
-// si dentro del array tenemos un dependencia el efecto se ejectura cda vez que se actualice la/s dep/s
+export const USE_EFFECT_CLASS = `import { Component, useEffect, useState } from "react";
 
 const useContador = (initial) => {
   const [contador, setContador] = useState(initial);
   const incrementar = () => setContador(contador + 1);
   return [contador, incrementar];
 };
+
+/// USE EFFECT - Con Class
+class Interval extends Component {
+  intervalo = "";
+
+  componentDidMount() {
+    this.intervalo = setInterval(() => console.log(this.props.contador), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalo);
+  }
+
+  render() {
+    return <p>Intervalo</p>;
+  }
+}
 
 const App = () => {
   const [contador, incrementar] = useContador(0);
@@ -58,6 +77,7 @@ const App = () => {
     <div>
       Contador: {contador}
       <button onClick={incrementar}>Incrementar</button>
+      <Interval contador={contador} />
     </div>
   );
 };
